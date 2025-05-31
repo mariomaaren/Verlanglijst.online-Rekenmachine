@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Settings</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <h3>Live List Total</h3>
+
+  <label>
+    <input type="checkbox" id="dark">
+    Dark banner
+  </label>
+  <br>
+
+  <label>
+    Update interval (ms):
+    <input type="number" id="interval" min="50">
+  </label>
+  <br>
+
+  <label>
+    Position:
+    <select id="position">
+      <option value="bottom-right">Bottom right</option>
+      <option value="bottom-left">Bottom left</option>
+      <option value="top-right">Top right</option>
+      <option value="top-left">Top left</option>
+    </select>
+  </label>
+  <br>
+
+  <label>
+    Currency symbol:
+    <input type="text" id="currency" maxlength="3">
+  </label>
+  <br>
+
+  <button id="save">Save</button>
+  <script src="popup.js"></script>
+</body>
+</html>
