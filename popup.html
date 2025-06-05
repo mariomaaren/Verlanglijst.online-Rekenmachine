@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live List Settings</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <h3>Live List Settings</h3>
+
+  <label for="position">Banner Position</label>
+  <select id="position">
+    <option value="bottom-right-fixed">Bottom Right (Fixed)</option>
+    <option value="bottom-right">Bottom Right</option>
+    <option value="bottom-left">Bottom Left</option>
+    <option value="top-right">Top Right</option>
+    <option value="top-left">Top Left</option>
+  </select>
+
+  <label for="theme">Theme</label>
+  <select id="theme">
+    <option value="dark">Dark</option>
+    <option value="light">Light</option>
+    <option value="custom">Custom</option>
+  </select>
+
+  <div id="colorPickerContainer" class="hidden">
+    <label>Background Color</label>
+    <div class="color-preview" id="colorPreview"></div>
+    
+    <div class="color-picker-wrapper">
+      <div class="color-wheel-container">
+        <canvas id="colorWheel" width="150" height="150"></canvas>
+        <div class="color-wheel-selector"></div>
+      </div>
+      
+      <div class="brightness-slider-container">
+        <label for="brightnessSlider">Brightness</label>
+        <input type="range" id="brightnessSlider" min="0" max="100" value="100">
+      </div>
+    </div>
+
+    <div class="hex-input-container">
+      <label for="customColorHex">HEX Color:</label>
+      <input type="text" id="customColorHex" maxlength="7" placeholder="#RRGGBB">
+    </div>
+  </div>
+
+  <label for="currency">Currency Symbol</label>
+  <input type="text" id="currency" maxlength="3" placeholder="€">
+
+  <label for="fontSize">Font Size (px)</label>
+  <input type="number" id="fontSize" min="10" max="50">
+
+  <label for="border">Show Border</label>
+  <select id="border">
+    <option value="true">Yes</option>
+    <option value="false">No</option>
+  </select>
+
+  <button id="reset">Reset to Defaults</button>
+
+  <div class="info">
+    <strong>Info</strong><br>
+    <a href="https://github.com/mariomaaren/Verlanglijst.online-Rekenmachine/" target="_blank" rel="noopener">GitHub</a><br>
+    Version: 2.2.0
+  </div>
+
+  <script src="colorWheel.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
