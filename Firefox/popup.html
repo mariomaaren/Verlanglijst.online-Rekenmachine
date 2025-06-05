@@ -4,31 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Live List Settings</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      padding: 10px;
-      width: 270px;
-    }
-    label {
-      margin-top: 10px;
-      display: block;
-    }
-    select, input[type="text"], input[type="number"], input[type="color"] {
-      width: 100%;
-      margin-top: 5px;
-    }
-    .info {
-      margin-top: 20px;
-      font-size: 12px;
-      border-top: 1px solid #ccc;
-      padding-top: 10px;
-    }
-    button {
-      margin-top: 15px;
-      width: 100%;
-    }
-  </style>
+  <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <h3>Live List Settings</h3>
@@ -42,17 +18,40 @@
     <option value="top-left">Top Left</option>
   </select>
 
-  <label for="dark">Theme</label>
-  <select id="dark">
-    <option value="true">Dark</option>
-    <option value="false">Light</option>
+  <label for="theme">Theme</label>
+  <select id="theme">
+    <option value="dark">Dark</option>
+    <option value="light">Light</option>
+    <option value="custom">Custom</option>
   </select>
 
+  <div id="colorPickerContainer" class="hidden">
+    <label>Background Color</label>
+    <div class="color-preview" id="colorPreview"></div>
+    
+    <div class="color-picker-wrapper">
+      <div class="color-wheel-container">
+        <canvas id="colorWheel" width="150" height="150"></canvas>
+        <div class="color-wheel-selector"></div>
+      </div>
+      
+      <div class="brightness-slider-container">
+        <label for="brightnessSlider">Brightness</label>
+        <input type="range" id="brightnessSlider" min="0" max="100" value="100">
+      </div>
+    </div>
+
+    <div class="hex-input-container">
+      <label for="customColorHex">HEX Color:</label>
+      <input type="text" id="customColorHex" maxlength="7" placeholder="#RRGGBB">
+    </div>
+  </div>
+
   <label for="currency">Currency Symbol</label>
-  <input type="text" id="currency" maxlength="3" placeholder="€" />
+  <input type="text" id="currency" maxlength="3" placeholder="€">
 
   <label for="fontSize">Font Size (px)</label>
-  <input type="number" id="fontSize" min="10" max="50" />
+  <input type="number" id="fontSize" min="10" max="50">
 
   <label for="border">Show Border</label>
   <select id="border">
@@ -65,12 +64,10 @@
   <div class="info">
     <strong>Info</strong><br>
     <a href="https://github.com/mariomaaren/Verlanglijst.online-Rekenmachine/" target="_blank" rel="noopener">GitHub</a><br>
-    Name: Maaren Aurich<br>
-    Email: maaren.aurich.3000@proton.me<br>
-    Discord: @Mrapfelduck <br>
-    Version: 2.0.1 <br>
+    Version: 2.2.0
   </div>
 
+  <script src="colorWheel.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

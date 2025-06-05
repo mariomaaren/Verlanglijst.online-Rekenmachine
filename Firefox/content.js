@@ -14,35 +14,36 @@
     border: '2px solid white',
     bottom: '0',
     right: '0',
-    display: 'none'  // hidden until /mijnlijstjes
+    display: 'none',
+    transition: 'background-color 0.3s ease, color 0.3s ease, border 0.3s ease'
   });
   document.body.appendChild(banner);
 
   let settings = {
-    dark: true,
+    theme: 'dark',
+    bgColor: null,
     interval: 200,
     position: 'bottom-right-fixed',
     currency: '€ ',
     fontSize: 14,
-    border: true,
-    bgColor: '#000000'
+    border: true
   };
   let updateTimer = null;
 
   function loadSettings(callback) {
     chrome.storage.sync.get(
       {
-        dark: true,
+        theme: 'dark',
+        bgColor: null,
         interval: 200,
         position: 'bottom-right-fixed',
         currency: '€ ',
         fontSize: 14,
-        border: true,
-        bgColor: '#000000'
+        border: true
       },
       opts => {
         settings = { ...settings, ...opts };
-        applyDarkSetting();
+        applyThemeSettings();
         applyPositionSetting();
         if (typeof callback === 'function') {
           callback();
@@ -51,34 +52,24 @@
     );
   }
 
-  function applyDarkSetting() {
-    // If user set a custom background color, use it
-    if (settings.bgColor) {
+  function applyThemeSettings() {
+    // Apply background color
+    if (settings.theme === 'custom' && settings.bgColor) {
       banner.style.backgroundColor = settings.bgColor;
-    } else if (settings.dark) {
-      banner.style.backgroundColor = 'black';
-    } else {
-      banner.style.backgroundColor = 'white';
-    }
-
-    // Set text color based on theme
-    if (settings.dark && !settings.bgColor) {
       banner.style.color = 'white';
-    } else if (!settings.dark && !settings.bgColor) {
+    } else if (settings.theme === 'light') {
+      banner.style.backgroundColor = 'white';
       banner.style.color = 'black';
     } else {
-      // If bgColor is custom, keep text as white for contrast
+      banner.style.backgroundColor = 'black';
       banner.style.color = 'white';
     }
 
-    // Border toggle
+    // Apply border
     if (settings.border) {
-      if (settings.dark && !settings.bgColor) {
-        banner.style.border = '2px solid white';
-      } else if (!settings.dark && !settings.bgColor) {
+      if (settings.theme === 'light') {
         banner.style.border = '2px solid black';
       } else {
-        // Custom bg color, border in white
         banner.style.border = '2px solid white';
       }
     } else {
@@ -98,7 +89,6 @@
     if (settings.position === 'bottom-right-fixed') {
       banner.style.bottom = '0';
       banner.style.right = '0';
-      banner.style.display = 'block';
     } else {
       switch (settings.position) {
         case 'bottom-right':
@@ -164,33 +154,41 @@
 
   chrome.storage.onChanged.addListener((changes, area) => {
     if (area === 'sync') {
-      if (changes.dark) {
-        settings.dark = changes.dark.newValue;
-        applyDarkSetting();
+      let needsUpdate = false;
+      
+      if (changes.theme || changes.bgColor) {
+        settings.theme = changes.theme?.newValue ?? settings.theme;
+        settings.bgColor = changes.bgColor?.newValue ?? settings.bgColor;
+        applyThemeSettings();
+        needsUpdate = true;
       }
-      if (changes.interval) {
-        settings.interval = changes.interval.newValue;
-      }
+      
       if (changes.position) {
         settings.position = changes.position.newValue;
         applyPositionSetting();
+        needsUpdate = true;
       }
+      
       if (changes.currency) {
         settings.currency = changes.currency.newValue;
+        needsUpdate = true;
       }
+      
       if (changes.fontSize) {
         settings.fontSize = changes.fontSize.newValue;
         banner.style.fontSize = settings.fontSize + 'px';
+        needsUpdate = true;
       }
+      
       if (changes.border) {
         settings.border = changes.border.newValue;
-        applyDarkSetting();
+        applyThemeSettings();
+        needsUpdate = true;
       }
-      if (changes.bgColor) {
-        settings.bgColor = changes.bgColor.newValue;
-        applyDarkSetting();
+      
+      if (needsUpdate) {
+        scheduleUpdate();
       }
-      scheduleUpdate();
     }
   });
 
