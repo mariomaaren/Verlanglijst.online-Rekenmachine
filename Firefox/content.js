@@ -1,29 +1,31 @@
-;(function() {
+(function() {
   const banner = document.createElement('div');
   banner.id = 'live-total-banner';
   Object.assign(banner.style, {
-    position:     'fixed',
-    padding:      '10px 15px',
+    position: 'fixed',
+    padding: '10px 15px',
     borderRadius: '8px',
-    boxShadow:    '0 2px 6px rgba(0,0,0,0.2)',
-    zIndex:       10000,
-    fontFamily:   'sans-serif',
-    fontSize:     '14px',
-
+    boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
+    zIndex: 10000,
+    fontFamily: 'sans-serif',
+    fontSize: '14px',
     backgroundColor: 'black',
-    color:           'white',
-    border:          '2px solid white',
-    bottom:          '0',
-    right:           '0',
-    display:         'none'  // start hidden, wordt zichtbaar bij /mijnlijstjes
+    color: 'white',
+    border: '2px solid white',
+    bottom: '0',
+    right: '0',
+    display: 'none'  // hidden until /mijnlijstjes
   });
   document.body.appendChild(banner);
 
   let settings = {
     dark: true,
     interval: 200,
-    position: 'bottom-right-fixed',  // aangepaste positie naam
-    currency: '€ '
+    position: 'bottom-right-fixed',
+    currency: '€ ',
+    fontSize: 14,
+    border: true,
+    bgColor: '#000000'
   };
   let updateTimer = null;
 
@@ -33,13 +35,13 @@
         dark: true,
         interval: 200,
         position: 'bottom-right-fixed',
-        currency: '€ '
+        currency: '€ ',
+        fontSize: 14,
+        border: true,
+        bgColor: '#000000'
       },
       opts => {
-        settings.dark     = opts.dark;
-        settings.interval = opts.interval;
-        settings.position = opts.position;
-        settings.currency = opts.currency;
+        settings = { ...settings, ...opts };
         applyDarkSetting();
         applyPositionSetting();
         if (typeof callback === 'function') {
@@ -50,38 +52,69 @@
   }
 
   function applyDarkSetting() {
-    // We forceren kleuren, dus niks doen hier
+    // If user set a custom background color, use it
+    if (settings.bgColor) {
+      banner.style.backgroundColor = settings.bgColor;
+    } else if (settings.dark) {
+      banner.style.backgroundColor = 'black';
+    } else {
+      banner.style.backgroundColor = 'white';
+    }
+
+    // Set text color based on theme
+    if (settings.dark && !settings.bgColor) {
+      banner.style.color = 'white';
+    } else if (!settings.dark && !settings.bgColor) {
+      banner.style.color = 'black';
+    } else {
+      // If bgColor is custom, keep text as white for contrast
+      banner.style.color = 'white';
+    }
+
+    // Border toggle
+    if (settings.border) {
+      if (settings.dark && !settings.bgColor) {
+        banner.style.border = '2px solid white';
+      } else if (!settings.dark && !settings.bgColor) {
+        banner.style.border = '2px solid black';
+      } else {
+        // Custom bg color, border in white
+        banner.style.border = '2px solid white';
+      }
+    } else {
+      banner.style.border = 'none';
+    }
+
+    // Apply font size
+    banner.style.fontSize = settings.fontSize + 'px';
   }
 
   function applyPositionSetting() {
-    banner.style.top    = '';
+    banner.style.top = '';
     banner.style.bottom = '';
-    banner.style.left   = '';
-    banner.style.right  = '';
+    banner.style.left = '';
+    banner.style.right = '';
 
     if (settings.position === 'bottom-right-fixed') {
-      banner.style.bottom          = '0';
-      banner.style.right           = '0';
-      banner.style.backgroundColor = 'black';
-      banner.style.color           = 'white';
-      banner.style.border          = '2px solid white';
-      banner.style.display         = 'block';
+      banner.style.bottom = '0';
+      banner.style.right = '0';
+      banner.style.display = 'block';
     } else {
       switch (settings.position) {
         case 'bottom-right':
           banner.style.bottom = '10px';
-          banner.style.right  = '10px';
+          banner.style.right = '10px';
           break;
         case 'bottom-left':
           banner.style.bottom = '10px';
-          banner.style.left   = '10px';
+          banner.style.left = '10px';
           break;
         case 'top-right':
-          banner.style.top   = '10px';
+          banner.style.top = '10px';
           banner.style.right = '10px';
           break;
         case 'top-left':
-          banner.style.top  = '10px';
+          banner.style.top = '10px';
           banner.style.left = '10px';
           break;
       }
@@ -89,8 +122,9 @@
   }
 
   function collectPrices() {
-    return Array.from(document.querySelectorAll('span.product-price'))
-      .filter(el => !el.closest('#live-total-banner'));
+    return Array.from(
+      document.querySelectorAll('span.product-price')
+    ).filter(el => !el.closest('#live-total-banner'));
   }
 
   function parsePrice(text) {
@@ -144,10 +178,21 @@
       if (changes.currency) {
         settings.currency = changes.currency.newValue;
       }
+      if (changes.fontSize) {
+        settings.fontSize = changes.fontSize.newValue;
+        banner.style.fontSize = settings.fontSize + 'px';
+      }
+      if (changes.border) {
+        settings.border = changes.border.newValue;
+        applyDarkSetting();
+      }
+      if (changes.bgColor) {
+        settings.bgColor = changes.bgColor.newValue;
+        applyDarkSetting();
+      }
       scheduleUpdate();
     }
   });
 
   loadSettings(updateBanner);
 })();
-  
