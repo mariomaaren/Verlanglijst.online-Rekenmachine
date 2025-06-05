@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load settings
   chrome.storage.sync.get({
-    position: 'bottom-right-fixed',
+    position: 'bottom-right',
     theme: 'dark',
     bgColor: '#000000',
     currency: '€ ',
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Reset button
   resetBtn.addEventListener('click', () => {
     chrome.storage.sync.set({
-      position: 'bottom-right-fixed',
+      position: 'bottom-right',
       theme: 'dark',
       bgColor: '#000000',
       currency: '€ ',

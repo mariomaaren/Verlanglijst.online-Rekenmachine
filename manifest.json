@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Live List Total",
-  "version": "1.1",
+  "version": "2.2.3",
   "description": "Shows a live-updating total of all product prices and lets you adjust settings",
   "permissions": [
     "storage",
