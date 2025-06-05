@@ -1,4 +1,4 @@
-Nederlands:
+### Nederlands:
 
 
 # Verlanglijst.online Rekenmachine  
@@ -22,11 +22,8 @@ Geeft de totaalsom van alle producten in je lijstje op [https://verlanglijst.onl
    Voor debuggen:  
    - Ga naar `about:debugging#/runtime/this-firefox`.  
    - Klik op **Load Temporary Add-on** (alleen als je de extensie wil debuggen).
-
-
-
-English:
-
+<br><br>
+### English:
 
 # Verlanglijst.online Calculator  
 Displays the total sum of all products in your list at [https://verlanglijst.online/](https://verlanglijst.online/)
