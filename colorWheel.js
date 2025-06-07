@@ -7,15 +7,12 @@ class ColorWheel {
     this.colorPreview = document.getElementById('colorPreview')
     this.hexInput = document.getElementById('customColorHex')
 
-    // hue 0–360, sat 0–100, light 0–100
     this.hue = 0
     this.sat = 0
-    // start light at 50 so slider is not pure black
     this.light = 50
-
+// why does this stupid thing not fucking work
     this.isDragging = false
 
-    // For debouncing chrome.storage writes
     this.storageTimeoutId = null
 
     this.init()
@@ -25,7 +22,6 @@ class ColorWheel {
     this.drawColorWheel()
     this.setupEventListeners()
 
-    // initialize slider value and banner
     this.brightnessSlider.value = this.light
     this.applyColor()
   }
@@ -38,7 +34,6 @@ class ColorWheel {
 
     this.ctx.clearRect(0, 0, size, size)
 
-    // draw 360 one-degree wedges with full saturation, 50% light
     for (let angle = 0; angle < 360; angle++) {
       const start = (angle * Math.PI) / 180
       const end = ((angle + 1) * Math.PI) / 180
@@ -50,7 +45,6 @@ class ColorWheel {
       this.ctx.fill()
     }
 
-    // overlay a white→transparent radial gradient to fade saturation toward center
     const grad = this.ctx.createRadialGradient(cx, cy, 0, cx, cy, radius)
     grad.addColorStop(0,    'rgba(255,255,255,1)')
     grad.addColorStop(1,    'rgba(255,255,255,0)')
@@ -61,7 +55,7 @@ class ColorWheel {
     this.ctx.fill()
   }
 
-  // returns {h, s} or null if click is outside wheel
+// better work now
   getHueSatFromPosition(x, y) {
     const rect = this.canvas.getBoundingClientRect()
     const cx = rect.left + rect.width / 2
@@ -81,7 +75,6 @@ class ColorWheel {
     return { h: angle, s: sat }
   }
 
-  // h (0–360), s (0–100), l (0–100)
   hslToHex(h, s, l) {
     h /= 360
     s /= 100
@@ -113,7 +106,6 @@ class ColorWheel {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase()
   }
 
-  // parse #RRGGBB → {h, s, l}
   hexToHSL(hex) {
     const m = /^#?([A-F\d]{2})([A-F\d]{2})([A-F\d]{2})$/i.exec(hex)
     if (!m) return { h: 0, s: 0, l: 0 }
@@ -153,17 +145,13 @@ class ColorWheel {
     }
   }
 
-  // call this on every hue, sat, or light change
   applyColor() {
-    // 1) update preview box
     this.colorPreview.style.backgroundColor =
       `hsl(${this.hue}, ${this.sat}%, ${this.light}%)`
 
-    // 2) update hex input value
     const hex = this.hslToHex(this.hue, this.sat, this.light)
     this.hexInput.value = hex
 
-    // 3) move selector circle
     const radius = this.canvas.width / 2
     const angleRad = (this.hue * Math.PI) / 180
     const dist = (this.sat / 100) * radius
@@ -172,14 +160,11 @@ class ColorWheel {
     this.selector.style.left = `${x - this.selector.offsetWidth / 2}px`
     this.selector.style.top = `${y - this.selector.offsetHeight / 2}px`
 
-    // 4) update slider banner
     this.updateSliderBackground()
 
-    // 5) debounce the chrome.storage sync write
     this.debounceStoreColor(hex)
   }
 
-  // build a gradient from black → current hue/sat at 50% → white
   updateSliderBackground() {
     const leftColor  = `hsl(${this.hue}, ${this.sat}%, 0%)`
     const midColor   = `hsl(${this.hue}, ${this.sat}%, 50%)`
@@ -189,7 +174,7 @@ class ColorWheel {
       `linear-gradient(to right, ${leftColor}, ${midColor}, ${rightColor})`
   }
 
-  // wait 500 ms after last call to actually write to chrome.storage
+  // how was the solutuon so extremely simple bro I wasted my time
   debounceStoreColor(hexValue) {
     if (this.storageTimeoutId) {
       clearTimeout(this.storageTimeoutId)
@@ -203,7 +188,6 @@ class ColorWheel {
   }
 
   setupEventListeners() {
-    // update on mousedown or click
     this.canvas.addEventListener('mousedown', (e) => {
       this.isDragging = true
       const hs = this.getHueSatFromPosition(e.clientX, e.clientY)
@@ -214,7 +198,6 @@ class ColorWheel {
       }
     })
 
-    // update continuously while dragging
     this.canvas.addEventListener('mousemove', (e) => {
       if (!this.isDragging) return
       const hs = this.getHueSatFromPosition(e.clientX, e.clientY)
@@ -225,12 +208,11 @@ class ColorWheel {
       }
     })
 
-    // stop dragging on mouseup
     document.addEventListener('mouseup', () => {
       this.isDragging = false
     })
 
-    // also handle simple click (no drag)
+    // thank you u/[deleted] guy on reddit
     this.canvas.addEventListener('click', (e) => {
       const hs = this.getHueSatFromPosition(e.clientX, e.clientY)
       if (hs) {
@@ -240,13 +222,11 @@ class ColorWheel {
       }
     })
 
-    // slider only changes lightness
     this.brightnessSlider.addEventListener('input', () => {
       this.light = parseInt(this.brightnessSlider.value, 10)
       this.applyColor()
     })
 
-    // typing a valid hex updates hue, sat, light, and slider
     this.hexInput.addEventListener('input', () => {
       const raw = this.hexInput.value
       if (/^#[0-9A-F]{6}$/i.test(raw)) {
@@ -261,7 +241,6 @@ class ColorWheel {
   }
 }
 
-// initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   new ColorWheel()
 })
