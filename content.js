@@ -53,7 +53,6 @@
   }
 
   function applyThemeSettings() {
-    // Apply background color
     if (settings.theme === 'custom' && settings.bgColor) {
       banner.style.backgroundColor = settings.bgColor;
       banner.style.color = 'white';
@@ -65,7 +64,6 @@
       banner.style.color = 'white';
     }
 
-    // Apply border
     if (settings.border) {
       if (settings.theme === 'light') {
         banner.style.border = '2px solid black';
@@ -76,7 +74,6 @@
       banner.style.border = 'none';
     }
 
-    // Apply font size
     banner.style.fontSize = settings.fontSize + 'px';
   }
 

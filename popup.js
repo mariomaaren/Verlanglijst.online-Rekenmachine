@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const borderEl = document.getElementById('border');
   const resetBtn = document.getElementById('reset');
 
-  // Load settings
   chrome.storage.sync.get({
     position: 'bottom-right',
     theme: 'dark',
@@ -27,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Theme change handler
   themeEl.addEventListener('change', () => {
     const theme = themeEl.value;
     if (theme === 'custom') {
@@ -45,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Other setting handlers
   positionEl.addEventListener('change', () => {
     chrome.storage.sync.set({ position: positionEl.value });
   });
@@ -65,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     chrome.storage.sync.set({ border: borderEl.value === 'true' });
   });
 
-  // Reset button
   resetBtn.addEventListener('click', () => {
     chrome.storage.sync.set({
       position: 'bottom-right',
