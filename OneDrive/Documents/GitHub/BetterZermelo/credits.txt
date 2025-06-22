@@ -1,0 +1,6 @@
+https://github.com/Ja90n/ICalServerforZermelo
+https://github.com/Vlietland-College/Rowizer
+https://github.com/electricsteve/ZermeloUtils
+https://github.com/klascal/klascal.github.io
+https://github.com/ArnoutLuinge/zermelo-API-morning-alarm
+https://github.com/FabianMeijneken/Next_lesson_finder
