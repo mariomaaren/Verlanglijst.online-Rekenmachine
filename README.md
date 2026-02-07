@@ -1,3 +1,7 @@
+I know this is pretty pointless since not alot of people use this site, and definetely don't need a customizable total counter, but I made it anyway since well It was a great practice for making extensions
+
+
+
 ### Nederlands:
 
 
