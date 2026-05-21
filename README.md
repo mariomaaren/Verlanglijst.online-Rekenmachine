@@ -50,3 +50,7 @@ Displays the total sum of all products in your list at [https://verlanglijst.onl
    For debugging:  
    - Go to `about:debugging#/runtime/this-firefox`.  
    - Click **Load Temporary Add-on** (only if you want to debug the extension).
+
+
+note: 
+i got help from chatgpt back in the day to write this, the ai wrote the injection stuff and parts of the ui, I did the rest
