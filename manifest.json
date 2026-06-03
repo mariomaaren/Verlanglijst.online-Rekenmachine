@@ -1,11 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "Live List Total",
+  "name": "Verlanglijst.online Calculator",
   "version": "2.2.3",
-  "description": "Shows a live-updating total of all product prices and lets you adjust settings",
+  "description": "Shows a live-updating total of all product prices on verlanglijst.online and lets you adjust settings",
   "permissions": [
-    "storage",
-    "activeTab"
+    "storage"
   ],
   "icons": {
     "16": "icon16.png",
