@@ -10,7 +10,6 @@ class ColorWheel {
     this.hue = 0
     this.sat = 0
     this.light = 50
-// why does this stupid thing not fucking work
     this.isDragging = false
 
     this.storageTimeoutId = null
@@ -55,7 +54,6 @@ class ColorWheel {
     this.ctx.fill()
   }
 
-// better work now
   getHueSatFromPosition(x, y) {
     const rect = this.canvas.getBoundingClientRect()
     const cx = rect.left + rect.width / 2
@@ -174,7 +172,6 @@ class ColorWheel {
       `linear-gradient(to right, ${leftColor}, ${midColor}, ${rightColor})`
   }
 
-  // how was the solutuon so extremely simple bro I wasted my time
   debounceStoreColor(hexValue) {
     if (this.storageTimeoutId) {
       clearTimeout(this.storageTimeoutId)
@@ -212,7 +209,6 @@ class ColorWheel {
       this.isDragging = false
     })
 
-    // thank you u/[deleted] guy on reddit
     this.canvas.addEventListener('click', (e) => {
       const hs = this.getHueSatFromPosition(e.clientX, e.clientY)
       if (hs) {
