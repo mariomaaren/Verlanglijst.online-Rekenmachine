@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Verlanglijst.online Calculator",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Shows a live-updating total of all product prices on verlanglijst.online and lets you adjust settings",
   "permissions": [
     "storage"
